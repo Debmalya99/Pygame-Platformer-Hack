@@ -43,4 +43,4 @@ lava_tiles = []		# group of lava tiles
 
 
 ### Now let us create the servers
-rendering_server = RenderingServer(screen_width,screen_height,screen)
+rendering_server:RenderingServer = RenderingServer(screen_width,screen_height,screen)

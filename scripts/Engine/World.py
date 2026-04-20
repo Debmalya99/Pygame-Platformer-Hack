@@ -13,6 +13,9 @@ import GameGlobals as gg
 
 from Camera2D import Camera2D
 
+from Tile import Tile
+from EngineMath import Vector2
+
 
 class World():
 	def __init__(self,camera:Camera2D=None):
@@ -47,12 +50,23 @@ class World():
 				img_rect.x = col * tile_size
 				img_rect.y = row * tile_size
 				t = (img, img_rect)
-				world_tiles.append(t)
+				
+				world_tiles.append(Tile(
+					Vector2(img_rect.x,img_rect.y),
+					img,
+					Vector2(tile_size,tile_size)
+				))
+				
 			else:
 				img_rect.x = custom_location[0]
 				img_rect.y = custom_location[1]
 				t = (img, img_rect)
-				world_tiles.append(t)
+			
+				world_tiles.append(Tile(
+					Vector2(img_rect.x,img_rect.y),
+					img,
+					Vector2(tile_size,tile_size)
+				))
 
 		else:
 			img = pygame.transform.scale(self.assets[name], (custom_size[0], custom_size[1]))
@@ -62,12 +76,22 @@ class World():
 				img_rect.x = col * tile_size
 				img_rect.y = row * tile_size
 				t = (img, img_rect)
-				world_tiles.append(t)
+				# world_tiles.append(t)
+				world_tiles.append(Tile(
+					Vector2(img_rect.x,img_rect.y),
+					img,
+					Vector2(custom_size[0],custom_size[1])
+				))
 			else:
 				img_rect.x = custom_location[0]
 				img_rect.y = custom_location[1]
 				t = (img, img_rect)
-				world_tiles.append(t)
+				# world_tiles.append(t)
+				world_tiles.append(Tile(
+					Vector2(img_rect.x,img_rect.y),
+					img,
+					Vector2(tile_size,tile_size)
+				))
 
 	# Initialize game tiles
 	def initialize_tiles(self):
@@ -190,7 +214,12 @@ class World():
 
 	# Draw the background
 	def draw_background(self):
-		gg.screen.blit(self.background, (0, 0))
+		# gg.screen.blit(self.background, (0, 0))
+		gg.rendering_server.add_drawable(
+			self.background,
+			Vector2(0,0).as_list(),
+			-1
+		)
 
 	# Draw the world data from the tiles we created
 	def draw_tiles(self):
@@ -200,5 +229,4 @@ class World():
 					render_pos = pygame.Vector2(tile[1].topleft) - self.camera.position
 					gg.screen.blit(tile[0], render_pos)
 				else:
-					# gg.screen.blit(tile[0], tile[1])
-					gg.rendering_server.add_drawable(tile[0],tile[1],1)
+					tile.render(gg.rendering_server,1)

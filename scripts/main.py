@@ -10,7 +10,6 @@ from Engine.Camera2D import Camera2D
 import random
 import pygame
 from pygame.locals import *
-from pygame import mixer
 
 # # ------------ Globals ------------
 import GameGlobals as gg
@@ -23,7 +22,7 @@ class Game():
 		self.camera:Camera2D = Camera2D()
 
 		pygame.mixer.pre_init(44100, -16, 2, 512)
-		mixer.init()
+		gg.mixer.init()
 		self.fps = gg.FPS
 		self.clock = pygame.time.Clock()
 		self.game_menu()
@@ -143,6 +142,7 @@ class Game():
 
 			# draw assets onto the screen
 			world.draw_background()
+			gg.rendering_server.flush()
 
 			# setup main menu
 			if in_menu:
@@ -160,7 +160,7 @@ class Game():
 				player.draw_player()
 
 
-				## LABEL: INVOKE_RENDERING_SERVER
+				## LABEL: INVOKE_RENDERING_SERVER_FOR_TILES
 				gg.rendering_server.flush()
 
 				# player active

@@ -206,21 +206,21 @@ class Character():
 		self.in_air = True
 		for tile in gg.world_tiles:
 			# check for collision in x direction ...
-			if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.rect.w, self.rect.h):
+			if tile.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.w, self.rect.h):
 				dx = 0 # if we collide, stop player
 
 			# check collision in y direction of expected dy (change in y)
-			if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.rect.w, self.rect.h):
+			if tile.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.w, self.rect.h):
 				# check if jumping
 				if self.vel_y < 0:
 					self.vel_y = 0
-					dy = tile[1].bottom - self.rect.top # dist between top of player and bottom of block
+					dy = tile.rect.bottom - self.rect.top # dist between top of player and bottom of block
 
 				# check if falling
 				elif self.vel_y >= 0:
 					self.vel_y = 0
 					self.in_air = False
-					dy = tile[1].top - self.rect.bottom
+					dy = tile.rect.top - self.rect.bottom
 
 		# check for collision with platforms
 		for platform in gg.plats[0]:
