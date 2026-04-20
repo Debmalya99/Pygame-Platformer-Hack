@@ -133,6 +133,7 @@ class Game():
 		player = Character(0, gg.screen_height - 130)
 		self.game_timer()
 
+		##  LABEL: MAIN_LOOP
 		run = True
 		while(run):
 			self.clock.tick(self.fps)
@@ -188,9 +189,15 @@ class Game():
 				gg.plats[0].draw(gg.screen)
 				gg.screen.blit(self.timer_font.render(self.timer_text, True, (47, 48, 29)), (60, 42))
 
+			## LABEL: RAW_INPUT_HANDLING
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					run = False
+
+				elif event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE:
+						# run = False
+						in_menu = True
 
 				# game timer
 				if event.type == pygame.USEREVENT:

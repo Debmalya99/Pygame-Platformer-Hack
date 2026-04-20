@@ -11,11 +11,12 @@ screen_height = 18*40			# screen height
 tile_size = 50
 world_tiles = []				# first layer
 FPS = 60
+GAME_TITLE = "Hackers Union"
 
 ## Initializations
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption(Config.GAME_TITLE)
+pygame.display.set_caption(GAME_TITLE)
 
 
 ### Some Flags

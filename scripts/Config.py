@@ -1,6 +1,6 @@
 ## Configurable Settings
 
-GAME_TITLE = "Hackers Union"
+# GAME_TITLE = "Hackers Union"
 
 
 # ------------ Colors ------------
