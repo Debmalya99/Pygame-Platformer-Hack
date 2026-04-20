@@ -2,6 +2,8 @@ import pygame
 import Config
 from pygame import mixer
 
+from Engine.Servers.RenderingServer import RenderingServer
+
 
 # ------------ Globals ------------
 
@@ -38,3 +40,7 @@ game_sound = False
 plats = []			# group of platforms
 check_points = []	# group of checkpoints
 lava_tiles = []		# group of lava tiles
+
+
+### Now let us create the servers
+rendering_server = RenderingServer(screen_width,screen_height,screen)

@@ -7,7 +7,7 @@ have it "Hackstar" the game.
 At least now I am not building an engine which to me is a great win.
 
 ## Navigating Around the Project: The Files
-- Hackstar has a very simple structure. Most of the game is in the *Game* class which is in main.py. I could have moved it to its own fil; decided not to do so, until things get more complex.
+- Hackstar has a very simple structure. Most of the game is in the *Game* class which is in main.py. I could have moved it to its own file; decided not to do so, until things get more complex.
 - Else there is the engine file which is just a bunch of classes that are used across the game.
 - "sprites" contain the graphics and "sounds" contain the sounds for the game.
 

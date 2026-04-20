@@ -5,6 +5,7 @@ from Engine.Button import Button
 from Engine.Platform import Platform
 from Engine.World import World
 from Engine.Character import Character
+from Engine.Camera2D import Camera2D
 
 import random
 import pygame
@@ -19,6 +20,8 @@ import GameGlobals as gg
 
 class Game():
 	def __init__(self):
+		self.camera:Camera2D = Camera2D()
+
 		pygame.mixer.pre_init(44100, -16, 2, 512)
 		mixer.init()
 		self.fps = gg.FPS
@@ -101,7 +104,7 @@ class Game():
 		self.reset_groups()
 		self.properties()
 		world = World()
-		player = Character(0, gg.screen_height - 130)
+		player:Character = Character(0, gg.screen_height - 130)
 		game_over = 0
 
 		values = []
@@ -129,7 +132,7 @@ class Game():
 
 		self.sounds()
 		self.properties()
-		world = World()
+		world = World(self.camera)
 		player = Character(0, gg.screen_height - 130)
 		self.game_timer()
 
@@ -139,7 +142,7 @@ class Game():
 			self.clock.tick(self.fps)
 
 			# draw assets onto the screen
-			world.draw_world()
+			world.draw_background()
 
 			# setup main menu
 			if in_menu:
@@ -148,10 +151,17 @@ class Game():
 				if self.play_button.draw():
 					in_menu = False
 			else:
+				self.camera.position = list(player.get_position())
+				# print(self.camera.position) ## DEBUG
+
 				world.draw_tiles()
 				gg.check_points[0].draw(gg.screen)
 				gg.lava_tiles[0].draw(gg.screen)
 				player.draw_player()
+
+
+				## LABEL: INVOKE_RENDERING_SERVER
+				gg.rendering_server.flush()
 
 				# player active
 				if game_over == 0:
@@ -198,6 +208,9 @@ class Game():
 					if event.key == pygame.K_ESCAPE:
 						# run = False
 						in_menu = True
+
+						# if in_menu:
+						# 	run = False
 
 				# game timer
 				if event.type == pygame.USEREVENT:

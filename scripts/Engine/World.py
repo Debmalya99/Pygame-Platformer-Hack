@@ -11,10 +11,13 @@ from Lava import Lava
 import Levels
 import GameGlobals as gg
 
+from Camera2D import Camera2D
+
 
 class World():
-	def __init__(self):
+	def __init__(self,camera:Camera2D=None):
 		self.assets = {}
+		self.camera:Camera2D = None#camera
 		self.load_assets()
 		self.initialize_tiles()
 
@@ -186,11 +189,16 @@ class World():
 		world_tiles = [ele for ele in reversed(world_tiles)]
 
 	# Draw the background
-	def draw_world(self):
+	def draw_background(self):
 		gg.screen.blit(self.background, (0, 0))
 
 	# Draw the world data from the tiles we created
 	def draw_tiles(self):
 		if gg.world_tiles:
 			for tile in gg.world_tiles:
-				gg.screen.blit(tile[0], tile[1])
+				if self.camera != None:
+					render_pos = pygame.Vector2(tile[1].topleft) - self.camera.position
+					gg.screen.blit(tile[0], render_pos)
+				else:
+					# gg.screen.blit(tile[0], tile[1])
+					gg.rendering_server.add_drawable(tile[0],tile[1],1)

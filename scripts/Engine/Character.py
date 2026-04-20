@@ -45,6 +45,15 @@ class Character():
 		self.animation = "idle"
 		self.cool_down = 10 # wait 10 frames before next img animation
 
+
+	# get the character rect
+	def get_rect(self):
+		return self.rect 
+	
+	# get the character position
+	def get_position(self):
+		return [self.rect.x,self.rect.y]
+
 	# Load all character images
 	def load_assets(self):
 		for name, path in Config.Player.items():
@@ -297,5 +306,6 @@ class Character():
 			else:
 				self.rect.y += dy
 
-		gg.screen.blit(self.image, self.rect)
+		# gg.screen.blit(self.image, self.rect)
+		gg.rendering_server.add_drawable(self.image,self.rect,2)
 
