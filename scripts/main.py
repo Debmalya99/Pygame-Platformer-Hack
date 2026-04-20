@@ -2,6 +2,13 @@
 import Config
 import Levels
 
+## Game Specific Classes
+from Classes.Button import Button
+from Classes.CheckPoint import CheckPoint
+from Classes.Platform import Platform
+from Classes.World import World
+
+
 import random
 import pygame
 from pygame.locals import *
@@ -10,8 +17,8 @@ from pygame import mixer
 # ------------ Globals ------------
 
 # dimensions: 18 x 20
-screen_width = 1000 			# screen width
-screen_height = 900 			# screen height
+screen_width = 600 			# screen width
+screen_height = 540 			# screen height
 tile_size = 50
 world_tiles = []				# first layer
 
@@ -40,46 +47,6 @@ lava_tiles = []		# group of lava tiles
 
 # -----------------------------------------------------------------------------------------------------------
 
-class Button():
-	def __init__(self, x, y, image):
-		self.image = image
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.clicked = False
-
-	def draw(self):
-		action = False
-
-		# get mouse position
-		pos = pygame.mouse.get_pos()
-
-		# check mouseover and clicked conditions
-		if self.rect.collidepoint(pos):
-			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-				action = True
-				self.clicked = True
-
-		if pygame.mouse.get_pressed()[0] == 0:
-			self.clicked = False
-
-
-		# draw button
-		screen.blit(self.image, self.rect)
-
-		return action
-
-# -----------------------------------------------------------------------------------------------------------
-
-class CheckPoint(pygame.sprite.Sprite):
-	def __init__(self, x, y, screen):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load(Config.Sprites["sign"])
-		self.image = pygame.transform.scale(img, (int(tile_size // 1.3), int(tile_size // 1.3)) )
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y + 63 # adjust the height to go ontop of grass
-
 # -----------------------------------------------------------------------------------------------------------
 
 class Lava(pygame.sprite.Sprite):
@@ -91,219 +58,191 @@ class Lava(pygame.sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 
-# -----------------------------------------------------------------------------------------------------------
-
-class Platform(pygame.sprite.Sprite):
-	def __init__(self, x, y, move_x, move_y, screen):
-		self.screen = screen
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load(Config.Sprites["ground_2"])
-		self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
-
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-		self.move_direction = 1
-		self.move_counter = random.randint(0, 40)
-
-		self.move_x = move_x # flag to move in x direction
-		self.move_y = move_y # flag to move in y direction
-
-	# handle platform movement
-	def update(self):
-		self.rect.x += self.move_direction * self.move_x
-		self.rect.y += self.move_direction * self.move_y
-		self.move_counter += 1
-
-		if abs(self.move_counter) > 50:
-			self.move_direction *= -1
-			self.move_counter *= -1
 
 # -----------------------------------------------------------------------------------------------------------
 
-class World():
-	def __init__(self):
-		self.assets = {}
-		self.load_assets()
-		self.initialize_tiles()
+# class World():
+# 	def __init__(self):
+# 		self.assets = {}
+# 		self.load_assets()
+# 		self.initialize_tiles()
 
-	# Load game assets
-	def load_assets(self):
-		# Load the background
-		self.background = pygame.image.load(Config.Sprites["background"])
-		self.background = pygame.transform.scale(self.background, (screen_width, screen_height))
+# 	# Load game assets
+# 	def load_assets(self):
+# 		# Load the background
+# 		self.background = pygame.image.load(Config.Sprites["background"])
+# 		self.background = pygame.transform.scale(self.background, (screen_width, screen_height))
 
-		# Create an asset dictionary
-		for name, path in Config.Sprites.items():
-			if name != "background":
-				self.assets[name] =  pygame.image.load(path)
+# 		# Create an asset dictionary
+# 		for name, path in Config.Sprites.items():
+# 			if name != "background":
+# 				self.assets[name] =  pygame.image.load(path)
 
-	# Makes an image game object
-	def create_tile(self, row, col, name, custom_size, custom_location):
-		global tile_size
-		global world_tiles
+# 	# Makes an image game object
+# 	def create_tile(self, row, col, name, custom_size, custom_location):
+# 		global tile_size
+# 		global world_tiles
 
-		# default size
-		if not custom_size:
+# 		# default size
+# 		if not custom_size:
 
-			img = pygame.transform.scale(self.assets[name], (tile_size, tile_size))
-			img_rect = img.get_rect()
+# 			img = pygame.transform.scale(self.assets[name], (tile_size, tile_size))
+# 			img_rect = img.get_rect()
 
-			if not custom_location:
-				img_rect.x = col * tile_size
-				img_rect.y = row * tile_size
-				t = (img, img_rect)
-				world_tiles.append(t)
-			else:
-				img_rect.x = custom_location[0]
-				img_rect.y = custom_location[1]
-				t = (img, img_rect)
-				world_tiles.append(t)
+# 			if not custom_location:
+# 				img_rect.x = col * tile_size
+# 				img_rect.y = row * tile_size
+# 				t = (img, img_rect)
+# 				world_tiles.append(t)
+# 			else:
+# 				img_rect.x = custom_location[0]
+# 				img_rect.y = custom_location[1]
+# 				t = (img, img_rect)
+# 				world_tiles.append(t)
 
-		else:
-			img = pygame.transform.scale(self.assets[name], (custom_size[0], custom_size[1]))
-			img_rect = img.get_rect()
+# 		else:
+# 			img = pygame.transform.scale(self.assets[name], (custom_size[0], custom_size[1]))
+# 			img_rect = img.get_rect()
 
-			if not custom_location:
-				img_rect.x = col * tile_size
-				img_rect.y = row * tile_size
-				t = (img, img_rect)
-				world_tiles.append(t)
-			else:
-				img_rect.x = custom_location[0]
-				img_rect.y = custom_location[1]
-				t = (img, img_rect)
-				world_tiles.append(t)
+# 			if not custom_location:
+# 				img_rect.x = col * tile_size
+# 				img_rect.y = row * tile_size
+# 				t = (img, img_rect)
+# 				world_tiles.append(t)
+# 			else:
+# 				img_rect.x = custom_location[0]
+# 				img_rect.y = custom_location[1]
+# 				t = (img, img_rect)
+# 				world_tiles.append(t)
 
-	# Initialize game tiles
-	def initialize_tiles(self):
-		global platforms
-		global check_points
-		global environmentals
-		global world_tiles
-		global current_level
+# 	# Initialize game tiles
+# 	def initialize_tiles(self):
+# 		global platforms
+# 		global check_points
+# 		global environmentals
+# 		global world_tiles
+# 		global current_level
 
-		world_tiles = []
+# 		world_tiles = []
 
-		row = 0
-		index = 0
-		for r in Levels.level[current_level]:
-			col = 0
-			for tile in r:
-				if (tile == 1):
-					self.create_tile(row, col, "ground_1", False, False)
+# 		row = 0
+# 		index = 0
+# 		for r in Levels.level[current_level]:
+# 			col = 0
+# 			for tile in r:
+# 				if (tile == 1):
+# 					self.create_tile(row, col, "ground_1", False, False)
 
-				if (tile == 2):
-					self.create_tile(row, col, "ground_2", False, False)
+# 				if (tile == 2):
+# 					self.create_tile(row, col, "ground_2", False, False)
 
-				if (tile == 2.1):	# moving platform (Horizontal)
-					platform = Platform(col * tile_size, row * tile_size , 1, 0, screen)
-					plats[0].add(platform)
+# 				if (tile == 2.1):	# moving platform (Horizontal)
+# 					platform = Platform(col * tile_size, row * tile_size , 1, 0, screen)
+# 					plats[0].add(platform)
 
-				if (tile == 2.2):	# moving platform (Vertical)
-					platform = Platform(col * tile_size, row * tile_size , 0, 1, screen)
-					plats[0].add(platform)
+# 				if (tile == 2.2):	# moving platform (Vertical)
+# 					platform = Platform(col * tile_size, row * tile_size , 0, 1, screen)
+# 					plats[0].add(platform)
 
-				if (tile == 3):
-					self.create_tile(row, col, "ground_3", False, False)
+# 				if (tile == 3):
+# 					self.create_tile(row, col, "ground_3", False, False)
 
-				if (tile == 4):
-					self.create_tile(row, col, "ground_4", False, False)
+# 				if (tile == 4):
+# 					self.create_tile(row, col, "ground_4", False, False)
 
-				if (tile == 5):
-					self.create_tile(row, col, "ground_5", False, False)
+# 				if (tile == 5):
+# 					self.create_tile(row, col, "ground_5", False, False)
 
-				if (tile == 6):
-					self.create_tile(row, col, "ground_6", False, False)
+# 				if (tile == 6):
+# 					self.create_tile(row, col, "ground_6", False, False)
 
-				if (tile == 7):
-					self.create_tile(row, col, "ground_7", False, False)
+# 				if (tile == 7):
+# 					self.create_tile(row, col, "ground_7", False, False)
 
-				if (tile == 8):
-					self.create_tile(row, col, "ground_8", False, False)
+# 				if (tile == 8):
+# 					self.create_tile(row, col, "ground_8", False, False)
 
-				if (tile == 9):
-					self.create_tile(row, col, "ground_9", False, False)
+# 				if (tile == 9):
+# 					self.create_tile(row, col, "ground_9", False, False)
 
-				if (tile == 10):
-					self.create_tile(row, col, "ground_10", False, False)
+# 				if (tile == 10):
+# 					self.create_tile(row, col, "ground_10", False, False)
 
-				if (tile == 11):
-					self.create_tile(row, col, "ground_11", False, False)
+# 				if (tile == 11):
+# 					self.create_tile(row, col, "ground_11", False, False)
 
-				if (tile == 12):
-					location = []
-					location.append(col * tile_size)
-					location.append(row * tile_size + 50)
-					self.create_tile(row, col, "grass_1", False, location)
+# 				if (tile == 12):
+# 					location = []
+# 					location.append(col * tile_size)
+# 					location.append(row * tile_size + 50)
+# 					self.create_tile(row, col, "grass_1", False, location)
 
-				if (tile == 13):
-					location = []
-					location.append(col * tile_size)
-					location.append(row * tile_size + 50)
-					self.create_tile(row, col, "grass_2", False, location)
+# 				if (tile == 13):
+# 					location = []
+# 					location.append(col * tile_size)
+# 					location.append(row * tile_size + 50)
+# 					self.create_tile(row, col, "grass_2", False, location)
 
-				if (tile == 14):
-					location = []
-					location.append(col * tile_size)
-					location.append(row * tile_size + 50)
-					self.create_tile(row, col, "grass_3", False, location)
+# 				if (tile == 14):
+# 					location = []
+# 					location.append(col * tile_size)
+# 					location.append(row * tile_size + 50)
+# 					self.create_tile(row, col, "grass_3", False, location)
 
-				if (tile == 15):
-					location = []
-					location.append(col * tile_size)
-					location.append(row * tile_size + 50)
-					self.create_tile(row, col, "grass_4", False, location)
+# 				if (tile == 15):
+# 					location = []
+# 					location.append(col * tile_size)
+# 					location.append(row * tile_size + 50)
+# 					self.create_tile(row, col, "grass_4", False, location)
 
-				if (tile == 16):
-					location = []
-					location.append(col * tile_size)
-					location.append(row * tile_size + 50)
-					self.create_tile(row, col, "grass_5", False, location)
+# 				if (tile == 16):
+# 					location = []
+# 					location.append(col * tile_size)
+# 					location.append(row * tile_size + 50)
+# 					self.create_tile(row, col, "grass_5", False, location)
 
-				if (tile == 17):
-					self.create_tile(row, col, "bush_1", False, False)
+# 				if (tile == 17):
+# 					self.create_tile(row, col, "bush_1", False, False)
 
-				if (tile == 18):
-					self.create_tile(row, col, "bush_2", False, False)
+# 				if (tile == 18):
+# 					self.create_tile(row, col, "bush_2", False, False)
 
-				if (tile == 19):
-					self.create_tile(row, col, "tree_1", False, False)
+# 				if (tile == 19):
+# 					self.create_tile(row, col, "tree_1", False, False)
 
-				if (tile == 20):
-					self.create_tile(row, col, "tree_2", False, False)
+# 				if (tile == 20):
+# 					self.create_tile(row, col, "tree_2", False, False)
 
-				if (tile == 21):
-					self.create_tile(row, col, "rock_1", False, False)
+# 				if (tile == 21):
+# 					self.create_tile(row, col, "rock_1", False, False)
 
-				if (tile == 22):
-					self.create_tile(row, col, "rock_2", False, False)
+# 				if (tile == 22):
+# 					self.create_tile(row, col, "rock_2", False, False)
 
-				if (tile == 23):
-					check = CheckPoint(col * tile_size, row * tile_size, screen)
-					check_points[0].add(check)
+# 				if (tile == 23):
+# 					check = CheckPoint(col * tile_size, row * tile_size, screen)
+# 					check_points[0].add(check)
 
-				if (tile == 24):
-					lava = Lava(col * tile_size, row * tile_size, screen)
-					lava_tiles[0].add(lava)
+# 				if (tile == 24):
+# 					lava = Lava(col * tile_size, row * tile_size, screen)
+# 					lava_tiles[0].add(lava)
 
-				index += 1
-				col += 1
-			row += 1
+# 				index += 1
+# 				col += 1
+# 			row += 1
 
-		# reverse the list so assets are drawn from bottom to top
-		world_tiles = [ele for ele in reversed(world_tiles)]
+# 		# reverse the list so assets are drawn from bottom to top
+# 		world_tiles = [ele for ele in reversed(world_tiles)]
 
-	# Draw the background
-	def draw_world(self):
-		screen.blit(self.background, (0, 0))
+# 	# Draw the background
+# 	def draw_world(self):
+# 		screen.blit(self.background, (0, 0))
 
-	# Draw the world data from the tiles we created
-	def draw_tiles(self):
-		if world_tiles:
-			for tile in world_tiles:
-				screen.blit(tile[0], tile[1])
+# 	# Draw the world data from the tiles we created
+# 	def draw_tiles(self):
+# 		if world_tiles:
+# 			for tile in world_tiles:
+# 				screen.blit(tile[0], tile[1])
 
 # -----------------------------------------------------------------------------------------------------------
 
@@ -622,10 +561,10 @@ class Game():
 		continue_img = pygame.transform.scale(continue_img, (200, 70))
 		resume_img = pygame.transform.scale(resume_img, (200, 70))
 
-		self.play_button = Button(screen_width // 2 - 100, screen_height // 2, play_img)
-		self.quit_button = Button(screen_width // 2 - 100, screen_height // 2 + 110, quit_img)
-		self.continue_button = Button(screen_width // 2 - 100, screen_height // 2, continue_img)
-		self.resume_button = Button(screen_width // 2 - 100, screen_height // 2, resume_img)
+		self.play_button = Button(screen_width // 2 - 100, screen_height // 2, play_img,screen)
+		self.quit_button = Button(screen_width // 2 - 100, screen_height // 2 + 110, quit_img,screen)
+		self.continue_button = Button(screen_width // 2 - 100, screen_height // 2, continue_img,screen)
+		self.resume_button = Button(screen_width // 2 - 100, screen_height // 2, resume_img,screen)
 
 	# load sounds
 	def sounds(self):
@@ -684,7 +623,7 @@ class Game():
 
 		self.reset_groups()
 		self.properties()
-		world = World()
+		world = World(screen_width,screen_height,Levels.level,screen)
 		player = Character(0, screen_height - 130)
 		game_over = 0
 
@@ -713,7 +652,7 @@ class Game():
 
 		self.sounds()
 		self.properties()
-		world = World()
+		world = World(screen_width,screen_height,Levels.level,screen)
 		player = Character(0, screen_height - 130)
 		self.game_timer()
 
