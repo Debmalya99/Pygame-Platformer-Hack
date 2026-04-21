@@ -12,5 +12,7 @@ class GlobalResourceStore:
 
 
     def get_image(self,image_id):
-        print(f"{self.__class__.__name__}::get_image::Image with id:{image_id} not found")
+        if image_id not in self.images.keys():
+            print(f"{self.__class__.__name__}::get_image::Image with id:{image_id} not found")
+            return None
         return self.images.get(image_id,None)

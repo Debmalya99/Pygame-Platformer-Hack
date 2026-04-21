@@ -51,3 +51,6 @@ class RenderingServer:
 
         ## And clear the rendering buffer
         self.rendering_buffer.clear()
+
+    def clear_screen(self,color):
+        self.screen.fill(color)
