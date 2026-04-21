@@ -3,7 +3,7 @@ import Config
 from pygame import mixer
 
 from Engine.Servers.RenderingServer import RenderingServer
-
+from Engine.InputManager import InputManager
 
 # ------------ Globals ------------
 
@@ -42,5 +42,6 @@ check_points = []	# group of checkpoints
 lava_tiles = []		# group of lava tiles
 
 
-### Now let us create the servers
+### Now let us create some global objects
 rendering_server:RenderingServer = RenderingServer(screen_width,screen_height,screen)
+input_manager:InputManager = InputManager()

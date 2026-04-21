@@ -140,6 +140,33 @@ class Game():
 		while(run):
 			self.clock.tick(self.fps)
 
+			## LABEL: RAW_INPUT_HANDLING
+			_event = pygame.event.get()
+			for event in _event:
+				if event.type == pygame.QUIT:
+					run = False
+
+				elif event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE:
+						# run = False
+						in_menu = True
+
+						# if in_menu:
+						# 	run = False
+
+				# game timer
+				if event.type == pygame.USEREVENT:
+					self.timer_counter -= 1
+					if self.timer_counter > 0:
+						self.timer_text = str(self.timer_counter).rjust(3)
+					else:
+						# player ran out of time
+						self.timer_text = '0'.rjust(3)
+						if not game_finished:
+							game_over = -1
+
+				gg.input_manager.capture_input(_event)
+
 			# draw assets onto the screen
 			world.draw_background()
 			gg.rendering_server.flush()
@@ -150,6 +177,8 @@ class Game():
 					run = False
 				if self.play_button.draw():
 					in_menu = False
+
+				gg.rendering_server.flush()
 			else:
 				self.camera.position = list(player.get_position())
 				# print(self.camera.position) ## DEBUG
@@ -199,29 +228,7 @@ class Game():
 				gg.plats[0].draw(gg.screen)
 				gg.screen.blit(self.timer_font.render(self.timer_text, True, (47, 48, 29)), (60, 42))
 
-			## LABEL: RAW_INPUT_HANDLING
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					run = False
-
-				elif event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_ESCAPE:
-						# run = False
-						in_menu = True
-
-						# if in_menu:
-						# 	run = False
-
-				# game timer
-				if event.type == pygame.USEREVENT:
-					self.timer_counter -= 1
-					if self.timer_counter > 0:
-						self.timer_text = str(self.timer_counter).rjust(3)
-					else:
-						# player ran out of time
-						self.timer_text = '0'.rjust(3)
-						if not game_finished:
-							game_over = -1
+			
 
 			pygame.display.update()
 

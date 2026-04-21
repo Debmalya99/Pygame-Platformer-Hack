@@ -30,7 +30,12 @@ class Button():
 
 
 		# draw button
-		gg.screen.blit(self.image, self.rect)
+		# gg.screen.blit(self.image, self.rect)
+		gg.rendering_server.add_drawable(
+			self.image,
+			self.rect,
+			20,
+		)
 
 		return action
 

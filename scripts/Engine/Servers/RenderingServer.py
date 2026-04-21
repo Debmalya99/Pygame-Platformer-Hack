@@ -2,7 +2,7 @@ import pygame
 from enum import Enum
 
 class DrawableType(Enum):
-    DT_TILE = 0
+    DT_IMAGE = 0
     DT_TEXT = 1
     DT_DEBUG_RECT = 2 # If you wish to draw a rectangle for debug purposes
     DT_DEBUG_CIRCLE = 3 # If you wish to draw a rectangle for debug purposes
@@ -27,7 +27,7 @@ class RenderingServer:
             drawable,
             location_vec2,
             z_index,
-            drawable_type = DrawableType.DT_TILE
+            drawable_type = DrawableType.DT_IMAGE
     ):
         self.rendering_buffer.append((
             drawable,   # The actual image or something that you wish to draw
@@ -46,7 +46,7 @@ class RenderingServer:
             _drawable = item[0]
             _location = item[1]
             _drawable_type = item[3]
-            if _drawable_type == DrawableType.DT_TILE:
+            if _drawable_type == DrawableType.DT_IMAGE:
                 self.screen.blit(_drawable,_location)
 
         ## And clear the rendering buffer

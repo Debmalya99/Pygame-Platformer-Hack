@@ -156,12 +156,13 @@ class Character():
 		key = pygame.key.get_pressed()
 
 		# currently idle
-		if not key[pygame.K_w] or not key[pygame.K_a] or not key[pygame.K_d]:
+		# if not key[pygame.K_w] or not key[pygame.K_a] or not key[pygame.K_d]:
+		if not (gg.input_manager.is_action_pressed('ui_jump') and gg.input_manager.is_action_pressed('ui_left') and gg.input_manager.is_action_pressed('ui_right')):
 			self.counter += 1
 			self.animation = "idle"
 
 		# currently jumping
-		if key[pygame.K_w] and self.jumped == False and self.in_air == False:
+		if gg.input_manager.is_action_pressed('ui_jump') and self.jumped == False and self.in_air == False:
 			self.vel_y = -14 # jump height
 			self.jumped = True
 			self.counter += 1
@@ -172,14 +173,14 @@ class Character():
 			self.jumped = False
 
 		# currently running right
-		if key[pygame.K_d]:
+		if gg.input_manager.is_action_pressed('ui_right'):
 			dx += 5
 			self.counter += 1
 			self.direction = 1
 			self.animation = "run"
 
 		# currently running left
-		if key[pygame.K_a]:
+		if gg.input_manager.is_action_pressed('ui_left'):
 			dx -= 5
 			self.counter += 1
 			self.direction = -1
