@@ -4,6 +4,7 @@ from pygame import mixer
 
 from Engine.Servers.RenderingServer import RenderingServer
 from Engine.InputManager import InputManager
+from Engine.GlobalResourceStore import GlobalResourceStore
 
 # ------------ Globals ------------
 
@@ -45,3 +46,4 @@ lava_tiles = []		# group of lava tiles
 ### Now let us create some global objects
 rendering_server:RenderingServer = RenderingServer(screen_width,screen_height,screen)
 input_manager:InputManager = InputManager()
+resource_store:GlobalResourceStore = GlobalResourceStore()

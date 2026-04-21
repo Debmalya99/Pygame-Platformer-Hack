@@ -7,8 +7,9 @@ class InputManager:
             'ui_right':[pygame.K_RIGHT,pygame.K_d],
             'ui_up':[pygame.K_UP,pygame.K_w],
             'ui_down':[pygame.K_DOWN,pygame.K_s],
-            'ui_jump':[pygame.K_SPACE],
-            'ui_pause':[pygame.K_ESCAPE,pygame.K_x]
+            'ui_jump':[pygame.K_SPACE,pygame.K_s],
+            'ui_pause':[pygame.K_ESCAPE,pygame.K_x],
+            'quit_game':[pygame.K_ESCAPE]
         }
 
         self.pressed = set()

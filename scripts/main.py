@@ -8,6 +8,7 @@ from Engine.Character import Character
 from Engine.Camera2D import Camera2D
 
 import random
+# import os
 import pygame
 from pygame.locals import *
 
@@ -149,7 +150,7 @@ class Game():
 				elif event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_ESCAPE:
 						# run = False
-						in_menu = True
+						in_menu = not in_menu
 
 						# if in_menu:
 						# 	run = False
@@ -165,7 +166,10 @@ class Game():
 						if not game_finished:
 							game_over = -1
 
-				gg.input_manager.capture_input(_event)
+			gg.input_manager.capture_input(_event)
+			# if gg.input_manager.is_action_just_pressed('quit_game'):
+			# 		print('Yo!')
+			# 		# run = False
 
 			# draw assets onto the screen
 			world.draw_background()

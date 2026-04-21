@@ -33,7 +33,8 @@ class World():
 		# Create an asset dictionary
 		for name, path in Config.Sprites.items():
 			if name != "background":
-				self.assets[name] =  pygame.image.load(path)
+				gg.resource_store.load_image(name,path)
+				# self.assets[name] = gg.resource_store.get_image(name)
 
 	# Makes an image game object
 	def create_tile(self, row, col, name, custom_size, custom_location):
@@ -43,7 +44,7 @@ class World():
 		# default size
 		if not custom_size:
 
-			img = pygame.transform.scale(self.assets[name], (tile_size, tile_size))
+			img = pygame.transform.scale(gg.resource_store.get_image(name), (tile_size, tile_size))
 			img_rect = img.get_rect()
 
 			if not custom_location:
