@@ -43,6 +43,10 @@ check_points = []	# group of checkpoints
 lava_tiles = []		# group of lava tiles
 
 
+### Some specific variables
+player_ptr = None
+
+
 ### Now let us create some global objects
 rendering_server:RenderingServer = RenderingServer(screen_width,screen_height,screen)
 input_manager:InputManager = InputManager()

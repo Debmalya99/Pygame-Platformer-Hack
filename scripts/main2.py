@@ -34,7 +34,7 @@ while(gg.is_running):
 	gg.screen.fill(gg.DEAFULT_BLUE)
 
 	## Here be the rendering functions
-	# gg.tileset.draw_tile('grass',(100,100),gg.screen)
+	
 	for tile in level.TILES:
 		gg.tileset.draw_tile(
 			tile['name'],

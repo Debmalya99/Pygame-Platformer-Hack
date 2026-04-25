@@ -6,6 +6,7 @@ from Engine.Platform import Platform
 from Engine.World import World
 from Engine.Character import Character
 from Engine.Camera2D import Camera2D
+from Engine.BasicPhysics import *
 
 import random
 # import os
@@ -134,6 +135,10 @@ class Game():
 		self.properties()
 		world = World(self.camera)
 		player = Character(0, gg.screen_height - 130)
+		
+		
+		gg.player_ptr = player
+		
 		self.game_timer()
 
 		##  LABEL: MAIN_LOOP
@@ -190,7 +195,7 @@ class Game():
 				world.draw_tiles()
 				gg.check_points[0].draw(gg.screen)
 				gg.lava_tiles[0].draw(gg.screen)
-				player.draw_player()
+				gg.player_ptr.draw_player(bp_collision)
 
 
 				## LABEL: INVOKE_RENDERING_SERVER_FOR_TILES

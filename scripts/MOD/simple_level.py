@@ -1,10 +1,10 @@
 level_tiles = '''
-.GGGGGGGG.................
+.GGGGGGGG........DDD......
 ....GGGGG.......GGGG......
-..........................
+................DDDD......
 ..GGGG....................
 ...........SSSSSSS........
-...........GGGGGGG........
+SSSSSSSSSSSGGGGGGG........
 '''
 
 level_array = level_tiles.strip().splitlines()
@@ -17,18 +17,15 @@ TILE_SIZE = 18
 
 for line in level_array:
     for char_ in line:
-        # print(char_,X,Y)
-        if char_ == '.':
-            X += TILE_SIZE
         
-        elif char_ == 'S':
+        if char_ == 'S':
             TILES.append({'name':'snow','loc':(X,Y)})
-            X += TILE_SIZE
-
         elif char_ == 'G':
             TILES.append({'name':'grass','loc':(X,Y)})
-            X += TILE_SIZE
-
+        elif char_ == 'D':
+            TILES.append({'name':'dirt','loc':(X,Y)})
+            
+        X += TILE_SIZE
     Y += TILE_SIZE
     X = 0
 
