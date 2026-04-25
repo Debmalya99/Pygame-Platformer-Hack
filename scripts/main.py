@@ -19,6 +19,8 @@ import GameGlobals as gg
 
 # -----------------------------------------------------------------------------------------------------------
 
+gg.max_levels = len(Levels.level)
+
 class Game():
 	def __init__(self):
 		self.camera:Camera2D = Camera2D()
@@ -104,9 +106,9 @@ class Game():
 
 		self.reset_groups()
 		self.properties()
-		world = World()
+		world = World(Levels.level,self.camera)
 		player:Character = Character(0, gg.screen_height - 130)
-		game_over = 0
+		gg.game_over = 0
 
 		values = []
 		values.append(player)
@@ -116,7 +118,7 @@ class Game():
 	# handle level timer
 	def game_timer(self):
 		current_level = gg.current_level
-		timer = 30
+		timer = gg.LEVEL_TIMER
 		ttext = str(timer)
 
 		self.timer_counter, self.timer_text = timer, ttext.rjust(3)
@@ -133,7 +135,7 @@ class Game():
 
 		self.sounds()
 		self.properties()
-		world = World(self.camera)
+		world = World(Levels.level,self.camera)
 		player = Character(0, gg.screen_height - 130)
 		
 		
@@ -169,7 +171,7 @@ class Game():
 						# player ran out of time
 						self.timer_text = '0'.rjust(3)
 						if not game_finished:
-							game_over = -1
+							gg.game_over = -1
 
 			gg.input_manager.capture_input(_event)
 			# if gg.input_manager.is_action_just_pressed('quit_game'):
@@ -202,23 +204,24 @@ class Game():
 				gg.rendering_server.flush()
 
 				# player active
-				if game_over == 0:
+				if gg.game_over == 0:
 					gg.plats[0].update()
 
 				# player finished level
-				if game_over == 1:
+				if gg.game_over == 1:
 					self.timer_counter = 0
-					current_level += 1
+					gg.current_level += 1
 					values = self.load_level()
 					player = values[0]
+					gg.player_ptr = player
 					world = values[1]
 
-					if current_level == gg.max_levels:
-						game_finished = True
+					if gg.current_level == gg.max_levels:
+						gg.game_finished = True
 					else:
 						self.game_timer()
 				# player death
-				if game_over == -1:
+				if gg.game_over == -1:
 					self.timer_counter = 0
 					if self.resume_button.draw():
 						values = self.load_level()

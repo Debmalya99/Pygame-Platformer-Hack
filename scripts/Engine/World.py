@@ -15,11 +15,13 @@ from Camera2D import Camera2D
 
 from Tile import Tile
 from EngineMath import Vector2
+from LevelLoader import str_level_to_num_array
 
 
 class World():
-	def __init__(self,camera:Camera2D=None):
+	def __init__(self,levels_array,camera:Camera2D=None):
 		self.assets = {}
+		self.levels_array = levels_array
 		self.camera:Camera2D = None#camera
 		self.load_assets()
 		self.initialize_tiles()
@@ -106,7 +108,10 @@ class World():
 
 		row = 0
 		index = 0
-		for r in Levels.level[gg.current_level]:
+		## LABEL: INJECTION_POINT
+		level_num_array = str_level_to_num_array(self.levels_array[gg.current_level])
+		# for r in self.levels_array[gg.current_level]:
+		for r in level_num_array:
 			col = 0
 			for tile in r:
 				if (tile == 1):
@@ -204,7 +209,7 @@ class World():
 
 				if (tile == 24):
 					lava = Lava(col * gg.tile_size, row * gg.tile_size, gg.tile_size)
-					gg.tile_size[0].add(lava)
+					gg.lava_tiles[0].add(lava)
 
 				index += 1
 				col += 1

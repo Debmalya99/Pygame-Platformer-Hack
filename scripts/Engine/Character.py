@@ -164,7 +164,7 @@ class Character():
 
 		# currently jumping
 		if gg.input_manager.is_action_pressed('ui_jump') and self.jumped == False and self.in_air == False:
-			self.vel_y = -14 # jump height
+			self.vel_y = gg.JUMP_HEIGHT # jump height
 			self.jumped = True
 			self.counter += 1
 			self.animation = "jump"
@@ -191,80 +191,7 @@ class Character():
 		value.append(dy)
 		return value
 
-	# handle player collision
-	# def collision(self, dx, dy):
-	# 	plats = gg.plats
-	# 	check_points = gg.check_points
-	# 	lava_tiles = gg.lava_tiles
-	# 	game_over = gg.game_over
-	# 	world_tiles = gg.world_tiles
-	# 	game_finished = gg.game_finished
-	# 	current_level = gg.current_level
-	# 	max_levels = gg.max_levels
-
-	# 	values = []
-	# 	collision_thresh = 20 # distance between moving platform in y dir
-
-	# 	self.in_air = True
-	# 	for tile in gg.world_tiles:
-	# 		# check for collision in x direction ...
-	# 		if tile.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.w, self.rect.h):
-	# 			dx = 0 # if we collide, stop player
-
-	# 		# check collision in y direction of expected dy (change in y)
-	# 		if tile.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.w, self.rect.h):
-	# 			# check if jumping
-	# 			if self.vel_y < 0:
-	# 				self.vel_y = 0
-	# 				dy = tile.rect.bottom - self.rect.top # dist between top of player and bottom of block
-
-	# 			# check if falling
-	# 			elif self.vel_y >= 0:
-	# 				self.vel_y = 0
-	# 				self.in_air = False
-	# 				dy = tile.rect.top - self.rect.bottom
-
-	# 	# check for collision with platforms
-	# 	for platform in gg.plats[0]:
-	# 		# check for x collision using expected position (dx) value
-	# 		if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.w, self.rect.h):
-	# 			dx = 0
-	# 		# check for y collision
-	# 		if platform.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.w, self.rect.h):
-	# 			# check if below platform
-	# 			if abs((self.rect.top + dy) - platform.rect.bottom) < collision_thresh:
-	# 				self.vel_y = 0
-	# 				dy = platform.rect.bottom - self.rect.top
-	# 			# check if above platform
-	# 			elif abs((self.rect.bottom + dy) - platform.rect.top) < collision_thresh:
-	# 				self.rect.bottom = platform.rect.top - 1
-	# 				self.in_air = False
-	# 				dy = 0
-	# 			# move sideways with the platform
-	# 			if platform.move_x != 0:
-	# 				self.rect.x += platform.move_direction
-
-	# 	# check for collision with checkpoint
-	# 	if pygame.sprite.spritecollide(self, gg.check_points[0], False):
-	# 		if gg.current_level + 1 > gg.max_levels:
-	# 			game_finished = True
-	# 			game_over = 0
-	# 		else:
-	# 			game_over = 1
-
-	# 	# check for collision with lava
-	# 	if pygame.sprite.spritecollide(self, gg.lava_tiles[0], False):
-	# 		self.death_animation()
-	# 		self.rect.y = self.rect.y
-	# 		self.rect.x = self.rect.x
-
-	# 	values.append(dx)
-	# 	values.append(dy)
-	# 	return values
-
-	# # create a 2px rect outline around the player
-	# def draw_outline(self):
-	# 	pygame.draw.rect(gg.screen, (179, 29, 18), self.rect, 2)
+	# handle player collision ==> This function has been moved to BasicPhysics.py
 
 	# handle the player
 	def draw_player(self,collision_callback:callable):

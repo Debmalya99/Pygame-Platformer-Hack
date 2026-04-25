@@ -9,8 +9,8 @@ from Engine.GlobalResourceStore import GlobalResourceStore
 # ------------ Globals ------------
 
 # dimensions: 18 x 20
-screen_width = 20*50			# screen width
-screen_height = 18*40			# screen height
+screen_width = 1000			# screen width 20*50
+screen_height = 900			# screen height 18*50
 tile_size = 50
 world_tiles = []				# first layer
 FPS = 60
@@ -21,6 +21,10 @@ pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption(GAME_TITLE)
 
+
+## Some constants
+JUMP_HEIGHT = -20
+LEVEL_TIMER = 60
 
 ### Some Flags
 in_menu = True

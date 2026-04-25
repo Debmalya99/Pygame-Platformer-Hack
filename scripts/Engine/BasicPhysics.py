@@ -61,11 +61,12 @@ def bp_collision(player_ptr, dx, dy):
 
 		# check for collision with checkpoint
 		if pygame.sprite.spritecollide(player_ptr, gg.check_points[0], False):
+			print("Collided with a checkpoint!")
 			if gg.current_level + 1 > gg.max_levels:
-				game_finished = True
-				game_over = 0
+				gg.game_finished = True
+				gg.game_over = 0
 			else:
-				game_over = 1
+				gg.game_over = 1
 
 		# check for collision with lava
 		if pygame.sprite.spritecollide(player_ptr, gg.lava_tiles[0], False):
